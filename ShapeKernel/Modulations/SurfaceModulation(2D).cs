@@ -48,7 +48,7 @@ namespace Leap71
             public enum                 EInput { FUNC, IMAGE };
             public enum                 ELine { FIRST, SECOND };
 
-            protected Image             m_oImage;
+            protected PicoGK.Image             m_oImage;
             protected RatioFunc         m_oFunc;
             protected MappingFunc       m_oMappingFunc;
             protected EInput            m_eInput;
@@ -92,7 +92,7 @@ namespace Leap71
             /// Surface modulation derived from an image.
             /// The mapping function indicates how an image grayscale value shall be translated into physical modulation.
             /// </summary>
-            public SurfaceModulation(Image oImage, MappingFunc oMappingFunc)
+            public SurfaceModulation(PicoGK.Image oImage, MappingFunc oMappingFunc)
             {
                 m_oImage                = oImage;
                 m_oMappingFunc          = oMappingFunc;

@@ -58,7 +58,7 @@ namespace Leap71
             public BaseLogoBox( LocalFrame  oFrame,
                                 float       fLength,
                                 float       fRefWidth,
-                                Image       oImage,
+                                PicoGK.Image       oImage,
                                 MappingFunc oMappingFunc) : base()
             {
                 m_aFrames           = new Frames(fLength, oFrame);
