@@ -80,13 +80,16 @@ namespace Leap71
             /// </summary>
             public static List<Vector3> aGetReparametrizedSpline(List<Vector3> aPoints, uint nTargetSamples)
             {
-                List<float> aLengthsAtIndices   = aGetLengthsAtIndices(aPoints);
-                float fSpineLength              = aLengthsAtIndices[aLengthsAtIndices.Count - 1];
-                float fTargetStep               = fSpineLength / nTargetSamples;
-                List<Vector3> aNewPoints        = new List<Vector3>();
+                if (nTargetSamples < 2)
+                    throw new ArgumentOutOfRangeException(nameof(nTargetSamples));
 
+                List<float> aLengthsAtIndices   = aGetLengthsAtIndices(aPoints);
+                float fSplineLength             = aLengthsAtIndices[^1];
+                float fTargetStep               = fSplineLength / (nTargetSamples - 1);
+                List<Vector3> aNewPoints        = new List<Vector3>((int)nTargetSamples);
                 aNewPoints.Add(aPoints[0]);
-                for (int j = 1; j < nTargetSamples; j++)
+
+                for (int j = 1; j < nTargetSamples - 1; j++)
                 {
                     float fTargetLength = fTargetStep * j;
                     int iUpperIndex     = 0;
@@ -94,24 +97,19 @@ namespace Leap71
 
                     for (iUpperIndex = 1; iUpperIndex < aPoints.Count; iUpperIndex++)
                     {
-                        fUpperLength    = aLengthsAtIndices[iUpperIndex];
+                        fUpperLength = aLengthsAtIndices[iUpperIndex];
                         if (fUpperLength >= fTargetLength)
-                        {
                             break;
-                        }
                     }
                     int iLowerIndex     = iUpperIndex - 1;
                     float fLowerLength  = aLengthsAtIndices[iLowerIndex];
                     float dS            = (fTargetLength - fLowerLength) / (fUpperLength - fLowerLength);
-
                     Vector3 vecLowerPt  = aPoints[iLowerIndex];
                     Vector3 vecUpperPt  = aPoints[iUpperIndex];
-
-                    //linear interpolation
                     Vector3 vecInterPol = vecLowerPt + dS * (vecUpperPt - vecLowerPt);
                     aNewPoints.Add(vecInterPol);
                 }
-                aNewPoints.Add(aPoints[aPoints.Count - 1]);
+                aNewPoints.Add(aPoints[^1]);
                 return aNewPoints;
             }
 
